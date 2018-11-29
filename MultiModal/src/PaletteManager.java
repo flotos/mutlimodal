@@ -8,34 +8,90 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public enum STATE_LIST {
-		PALETTE_VIDE, ATTENTE_SPECIFICATION, ATTENTE_ORDRE,
-		PROCESSUS_SUPPRESSION,
-		PROCESSUS_DEPLACEMENT
-};
-
 public class PaletteManager {
 
-    private String state;
+    private STATE_LIST state;
+    private String shape;
+    private String couleur;
     
     public static void main(String[] args) {
     	
 	}
     
     private void choisirRectangle() {
-    	state = STATE_LIST.ATT
+    	switch(state) {
+    		case PALETTE_VIDE:
+    	    	state = STATE_LIST.ATTENTE_SPECIFICATION;
+    	    	shape = "rectangle";
+    			break;
+    		case ATTENTE_SPECIFICATION:
+    			break;
+    		case ATTENTE_ORDRE:
+    	    	state = STATE_LIST.ATTENTE_SPECIFICATION;
+    	    	shape = "rectangle";
+    			break;
+    		case PROCESSUS_SUPPRESSION:
+    			break;
+    		case PROCESSUS_DEPLACEMENT:
+    			break;
+    	}
     }
     
     private void choisirEllipse() {
-    	
+    	switch(state) {
+			case PALETTE_VIDE:
+		    	state = STATE_LIST.ATTENTE_SPECIFICATION;
+		    	shape = "ellipse";
+				break;
+			case ATTENTE_SPECIFICATION:
+				break;
+			case ATTENTE_ORDRE:
+		    	state = STATE_LIST.ATTENTE_SPECIFICATION;
+		    	shape = "ellipse";
+				break;
+			case PROCESSUS_SUPPRESSION:
+				break;
+			case PROCESSUS_DEPLACEMENT:
+				break;
+    	}
     }
     
-    private void designerPosition() {
-    	
+    private void designerPosition(int x, int y) {
+    	switch(state) {
+			case PALETTE_VIDE:
+				break;
+			case ATTENTE_SPECIFICATION:
+				state = STATE_LIST.ATTENTE_ORDRE;
+				if(shape == "rectangle") {
+					// Créer un rectangle
+				} else if(shape == "ellipse") {
+					// Créer une ellipse
+				}
+				break;
+			case ATTENTE_ORDRE:
+				break;
+			case PROCESSUS_SUPPRESSION:
+				break;
+			case PROCESSUS_DEPLACEMENT:
+				break;
+    	}
     }
     
-    private void designerCouleur() {
-    	
+    private void designerCouleur(String couleur) {
+    	switch(state) {
+			case PALETTE_VIDE:
+				break;
+			case ATTENTE_SPECIFICATION:
+				state = STATE_LIST.ATTENTE_SPECIFICATION;
+				this.couleur = couleur;
+				break;
+			case ATTENTE_ORDRE:
+				break;
+			case PROCESSUS_SUPPRESSION:
+				break;
+			case PROCESSUS_DEPLACEMENT:
+				break;
+    	}
     }
     
     private void choisirActionSupprimer() {
