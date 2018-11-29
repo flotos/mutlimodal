@@ -20,19 +20,36 @@
     </one-of>
     <ruleref special="GARBAGE" />
   </rule>
-       
-   <rule id="yes">
-    <one-of>
-      <item>affirmatif</item>
-      <item>tout à fait</item>
-      <item>oui</item>
-    </one-of> 
-  </rule> 
-  <rule id="no">
-    <one-of>
-      <item>négatif</item>
-      <item>non</item>
-      <item>pas question</item>
-    </one-of>
+
+
+  <rule id="rectangle">
+    <item>rectangle</item>
+    <tag>out.text  = "Action:rectangle"</tag>
   </rule>
+
+  <rule id="ellipse">
+    <item>ellipse</item>
+    <tag>out.text  = "Action:ellipse"</tag>
+  </rule>
+
+  <rule id="deplacer">
+    <item>deplacer</item>
+    <tag>out.text  = "Action:deplacer"</tag>
+  </rule>
+
+  <rule id="supprimer">
+    <item>supprimer</item>
+    <tag>out.text  = "Action:supprimer"</tag>
+  </rule>
+
+  <rule id="ici">
+    <item>ici</item>
+    <tag>out.text  = "Action:ici"</tag>
+  </rule>
+
+  <rule id="la">
+    <item>la</item>
+    <tag>out.text  = "Action:la"</tag>
+  </rule>
+
 </grammar>
