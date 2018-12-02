@@ -11,6 +11,7 @@ public class PaletteManager {
 	public PaletteManager(PaletteCommunication paletteCommunication) {
 		this.state = STATE_LIST.PALETTE_VIDE;
 		this.paletteCommunication = paletteCommunication;
+		this.couleur = "rouge";
 	}
 	
 	public STATE_LIST getState() {

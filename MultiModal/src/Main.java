@@ -3,22 +3,25 @@ import fr.dgac.ivy.IvyClient;
 import fr.dgac.ivy.IvyException;
 import fr.dgac.ivy.IvyMessageListener;
 
-public class Multimodal {
+public class Main {
 	
 	public static void main(String[] args) throws IvyException {
 
 		PaletteCommunication paletteCommunication = new PaletteCommunication();
 		PaletteManager paletteManager = new PaletteManager(paletteCommunication);
+		System.out.println("Application started");
 		
 		Ivy bus = new Ivy("MyIvyAgent", "monMessage", null);
 		bus.start("127.255.255.255:2010");
 		bus.bindMsg("Palette:MouseMoved x=(.*) y=(.*)", new IvyMessageListener() {
 			public void receive(IvyClient client, String[] args) {
-				paletteManager.setCurrentPosition(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+				System.out.println("Received " + "Palette:MouseMoved x=" + args[0] + " y=" + args[1]);
+				paletteManager.setCurrentPosition(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 			}
 		});
 		bus.bindMsg("MyIvyAgent Send=(.*)", new IvyMessageListener() {
 			public void receive(IvyClient client, String[] args) {
+				System.out.println("Received " + "MyIvyAgent Send=" + args[0]);
 				switch(args[0]) {
 				// Gestual
 					case "ellipse":
