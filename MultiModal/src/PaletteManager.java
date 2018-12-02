@@ -3,15 +3,15 @@ public class PaletteManager {
 	private PaletteCommunication paletteCommunication;
 	
     private STATE_LIST state;
-    private String shape;
-    private String couleur;
-    private int[] shapes;
-    private int[] position;
+    private String currentShape;
+    private String currentColor;
+    private int[] currentShapes;
+    private int[] cursorPosition = {0, 0};
 	
 	public PaletteManager(PaletteCommunication paletteCommunication) {
 		this.state = STATE_LIST.PALETTE_VIDE;
 		this.paletteCommunication = paletteCommunication;
-		this.couleur = "rouge";
+		this.currentColor = "rouge";
 	}
 	
 	public STATE_LIST getState() {
@@ -22,13 +22,13 @@ public class PaletteManager {
     	switch(state) {
     		case PALETTE_VIDE:
     	    	state = STATE_LIST.ATTENTE_SPECIFICATION;
-    	    	shape = "rectangle";
+    	    	currentShape = "rectangle";
     			break;
     		case ATTENTE_SPECIFICATION:
     			break;
     		case ATTENTE_ORDRE:
     	    	state = STATE_LIST.ATTENTE_SPECIFICATION;
-    	    	shape = "rectangle";
+    	    	currentShape = "rectangle";
     			break;
     		case PROCESSUS_SUPPRESSION:
     			break;
@@ -43,13 +43,13 @@ public class PaletteManager {
     	switch(state) {
 			case PALETTE_VIDE:
 		    	state = STATE_LIST.ATTENTE_SPECIFICATION;
-		    	shape = "ellipse";
+		    	currentShape = "ellipse";
 				break;
 			case ATTENTE_SPECIFICATION:
 				break;
 			case ATTENTE_ORDRE:
 		    	state = STATE_LIST.ATTENTE_SPECIFICATION;
-		    	shape = "ellipse";
+		    	currentShape = "ellipse";
 				break;
 			case PROCESSUS_SUPPRESSION:
 				break;
@@ -66,12 +66,12 @@ public class PaletteManager {
 				break;
 			case ATTENTE_SPECIFICATION:
 				state = STATE_LIST.ATTENTE_ORDRE;
-				if(shape == "rectangle") {
+				if(currentShape == "rectangle") {
 					// Créer un rectangle
-					paletteCommunication.creerRectangle(position[0], position[1], couleur);
-				} else if(shape == "ellipse") {
+					paletteCommunication.creerRectangle(cursorPosition[0], cursorPosition[1], currentColor);
+				} else if(currentShape == "ellipse") {
 					// Créer une ellipse
-					paletteCommunication.creerEllipse(position[0], position[1], couleur);
+					paletteCommunication.creerEllipse(cursorPosition[0], cursorPosition[1], currentColor);
 				}
 				break;
 			case ATTENTE_ORDRE:
@@ -87,13 +87,13 @@ public class PaletteManager {
     	}
     }
     
-    public void designerCouleur(String couleur) {
+    public void designerCouleur(String currentColor) {
     	switch(state) {
 			case PALETTE_VIDE:
 				break;
 			case ATTENTE_SPECIFICATION:
 				state = STATE_LIST.ATTENTE_SPECIFICATION;
-				this.couleur = couleur;
+				this.currentColor = currentColor;
 				break;
 			case ATTENTE_ORDRE:
 				break;
@@ -133,10 +133,10 @@ public class PaletteManager {
 			case ATTENTE_ORDRE:
 				break;
 			case PROCESSUS_SUPPRESSION:
-				if(shapes.length == 1) {
+				if(currentShapes.length == 1) {
 					state = STATE_LIST.PALETTE_VIDE;
 				}
-				if(shapes.length > 1) {
+				if(currentShapes.length > 1) {
 					state = STATE_LIST.ATTENTE_ORDRE;
 				}
 				// supprimer objet
@@ -157,13 +157,13 @@ public class PaletteManager {
 			case ATTENTE_ORDRE:
 				break;
 			case PROCESSUS_SUPPRESSION:
-				if(shapes.length == 1) {
+				if(currentShapes.length == 1) {
 					state = STATE_LIST.PALETTE_VIDE;
 				}
-				if(shapes.length > 1) {
+				if(currentShapes.length > 1) {
 					state = STATE_LIST.ATTENTE_ORDRE;
 				}
-				// supprimer objet avec couleur
+				// supprimer objet avec currentColor
 				break;
 			case PROCESSUS_DEPLACEMENT:
 				break;
@@ -211,22 +211,22 @@ public class PaletteManager {
 	public void setCurrentPosition(int x, int y) {
     	switch(state) {
     		case PALETTE_VIDE:
-    			position[0] = x;
-    			position[1] = y;
+    			cursorPosition[0] = x;
+    			cursorPosition[1] = y;
     			break;
     		case ATTENTE_SPECIFICATION:
-    			position[0] = x;
-    			position[1] = y;
+    			cursorPosition[0] = x;
+    			cursorPosition[1] = y;
     			break;
     		case ATTENTE_ORDRE:
     			break;
     		case PROCESSUS_SUPPRESSION:
-    			position[0] = x;
-    			position[1] = y;
+    			cursorPosition[0] = x;
+    			cursorPosition[1] = y;
     			break;
     		case PROCESSUS_DEPLACEMENT:
-    			position[0] = x;
-    			position[1] = y;
+    			cursorPosition[0] = x;
+    			cursorPosition[1] = y;
     			break;
 			case OBJET_A_DEPLACER:
 				break;

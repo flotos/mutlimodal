@@ -9,6 +9,7 @@ public class Main {
 
 		PaletteCommunication paletteCommunication = new PaletteCommunication();
 		PaletteManager paletteManager = new PaletteManager(paletteCommunication);
+		
 		System.out.println("Application started");
 		
 		Ivy bus = new Ivy("MyIvyAgent", "monMessage", null);
@@ -38,8 +39,7 @@ public class Main {
 					case "supprimer":
 						paletteManager.choisirActionSupprimer();
 						break;
-					case "la":
-					case "ici":
+					case "endroit":
 						paletteManager.designerPosition();
 						break;
 					case "rouge":

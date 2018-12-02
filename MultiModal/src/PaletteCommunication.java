@@ -10,6 +10,7 @@ public class PaletteCommunication {
 
 	private Ivy bus;
 	private Boolean allHaveResponded;
+	private int hasResponded;
 	
 	public PaletteCommunication() {
 		bus = new Ivy("MyIvyAgent", "monMessage", null);
@@ -41,18 +42,38 @@ public class PaletteCommunication {
 			e.printStackTrace();
 		}
 	}
-
-	public void deplacerObjet(int x, int y, String couleur, String shapeType) {
+	
+	public void supprimerObjet(int x, int y, String couleur, char shapeType) {
+		Shape shapeToMove = getShapeBelowCursor(x, y, couleur, shapeType);
 		
+		try {
+			bus.sendMsg("Palette:SupprimerObjet nom=" + shapeToMove.getName() + " x=" + x + " y=" + y);
+		} catch (IvyException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deplacerObjet(int x, int y, String couleur, char shapeType) {
+		Shape shapeToMove = getShapeBelowCursor(x, y, couleur, shapeType);
+		
+		try {
+			bus.sendMsg("Palette:DeplacerObjetAbsolu nom=" + shapeToMove.getName() + " x=" + x + " y=" + y);
+		} catch (IvyException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Shape getShapeBelowCursor(int x, int y, String couleur, char shapeType) {
+
+		List<Shape> listShape = new ArrayList<>();
+		List<Shape> listShapeWithColor = new ArrayList<>();
 		String rgbaColor = couleur == "rouge" ? "255:0:0" : "0:0:255";
 		allHaveResponded = false;
-		// date de timeout
-		List<Shape> listShape = new ArrayList<>();
-		
+		hasResponded = 0;
 		
 		// On demande les infos des points sous le curseur
 		try {
-			bus.sendMsg("Palette:TesterPoint x="+x+"y="+y);
+			bus.sendMsg("Palette:TesterPoint x="+x+" y="+y);
 		} catch (IvyException e) {
 			e.printStackTrace();
 		}
@@ -75,34 +96,50 @@ public class PaletteCommunication {
 					allHaveResponded = true;
 				}
 			});
+			
+			// Should have a timeout
 			while(!allHaveResponded) {
 			}
 		} catch (IvyException e) {
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-//		if(!couleur.isEmpty()) {
-//
-//			// On demande la liste des objets d'une couleur spécifique
-//			try {
-//				bus.sendMsg("Palette:TesterCouleurContour couleur="+rgbaColor);
-//			} catch (IvyException e) {
-//				e.printStackTrace();
-//			}
-//
-//			// On écoute la liste des objets nous répondant leur couleur
-//			try {
-//				bus.bindMsg("Palette:ResultatCouleurContour couleur=" + rgbaColor + " nom=(.*)", new IvyMessageListener() {
-//					public void receive(IvyClient client, String[] args) {
-//						
-//					}
-//				});
-//			} catch (IvyException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		if(couleur.isEmpty()) {
+			for(Shape shape : listShape) {
+				if(shape.getName().charAt(0) == shapeType) {
+					return shape;
+				}
+			}
+		} else {
+			for(Shape shape : listShape) {
+				// Demander les infos de chaque points, puis en trier ceux qui ont la forme demandée
+				try {
+					bus.sendMsg("Palette:TesterPoint nom=" + shape.getName());
+				} catch (IvyException e) {
+					e.printStackTrace();
+				}
+				try {
+					bus.bindMsg("Palette:Info nom=(.*) x=(.*) y=(.*) longueur=(.*) hauteur=(.*) couleurFond=(.*) couleurContour=(.*)", new IvyMessageListener() {
+						public void receive(IvyClient client, String[] args) {
+							String stringColor = args[6].equals("255:0:0") ? "rouge" : "bleu";
+							listShapeWithColor.add( new Shape(args[0], stringColor, Integer.parseInt(args[1]), Integer.parseInt(args[2])));
+							hasResponded++;
+						}
+					});
+					
+					// Should have a timeout
+					while(hasResponded< listShape.size()) {
+					}
+				} catch (IvyException e) {
+					e.printStackTrace();
+				}
+			}
+			for(Shape shape : listShapeWithColor) {
+				if(shape.getName().charAt(0) == shapeType) {
+					return shape;
+				}
+			}
+		}
+		return null;
 	}
 }

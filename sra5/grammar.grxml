@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE grammar PUBLIC "-//W3C//DTD GRAMMAR 1.0//EN"
-               "grammar.dtd">
+              "grammar.dtd">
 <!-- the default grammar language is FR  -->
 <grammar  version="1.0"
-         mode ="voice"
-         xmlns="http://www.w3.org/2001/06/grammar"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://www.w3.org/2001/06/grammar
-                             grammar.xsd"
-         xml:lang="fr-FR" root="answer" tag-format="semantics/1.0">
+        mode ="voice"
+        xmlns="http://www.w3.org/2001/06/grammar"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.w3.org/2001/06/grammar
+                            grammar.xsd"
+        xml:lang="fr-FR" root="answer" tag-format="semantics/1.0">
 
-  <rule id="answer" scope="public">
-   <ruleref special="GARBAGE" />
-   <one-of>
-     <item><ruleref uri="#rectangle"/>
-     <tag>out="rectangle";</tag></item>
-     <item><ruleref uri="#ellipse"/>
-     <tag>out="ellipse";</tag></item>
-     <item><ruleref uri="#deplacer"/>
-     <tag>out="deplacer";</tag></item>
-     <item><ruleref uri="#supprimer"/>
-     <tag>out="supprimer";</tag></item>
-     <item><ruleref uri="#endroit"/>
-     <tag>out="endroit";</tag></item>
-     <item><ruleref uri="#rouge"/>
-     <tag>out="rouge";</tag></item>
-     <item><ruleref uri="#bleu"/>
-     <tag>out="bleu";</tag></item>
-   </one-of>
-   <ruleref special="GARBAGE" />
- </rule>
-
-
- <rule id="rectangle">
+ <rule id="answer" scope="public">
+  <ruleref special="GARBAGE" />
   <one-of>
-   <item>rectangle</item>
+    <item><ruleref uri="#rectangle"/>
+    <tag>out="rectangle";</tag></item>
+    <item><ruleref uri="#ellipse"/>
+    <tag>out="ellipse";</tag></item>
+    <item><ruleref uri="#deplacer"/>
+    <tag>out="deplacer";</tag></item>
+    <item><ruleref uri="#supprimer"/>
+    <tag>out="supprimer";</tag></item>
+    <item><ruleref uri="#endroit"/>
+    <tag>out="endroit";</tag></item>
+    <item><ruleref uri="#rouge"/>
+    <tag>out="rouge";</tag></item>
+    <item><ruleref uri="#bleu"/>
+    <tag>out="bleu";</tag></item>
   </one-of>
- </rule>
+  <ruleref special="GARBAGE" />
+</rule>
 
- <rule id="ellipse">
+
+<rule id="rectangle">
+ <one-of>
+  <item>rectangle</item>
+ </one-of>
+</rule>
+
+<rule id="ellipse">
+ <one-of>
+   <item>ellipse</item>
+ </one-of>
+</rule>
+
+<rule id="deplacer">
+ <one-of>
+  <item>déplacer</item>
+</one-of>
+</rule>
+
+<rule id="supprimer">
+ <one-of>
+  <item>supprimer</item>
+</one-of>
+</rule>
+
+<rule id="endroit">
+ <one-of>
+  <item>ici</item>
+  <item>là</item>
+</one-of>
+</rule>
+
+ <rule id="rouge">
   <one-of>
-    <item>ellipse</item>
+    <item>rouge</item>
   </one-of>
- </rule>
+</rule>
 
- <rule id="deplacer">
-  <one-of>
-   <item>dÃ©placer</item>
- </one-of>
- </rule>
-
- <rule id="supprimer">
-  <one-of>
-   <item>supprimer</item>
- </one-of>
- </rule>
-
- <rule id="endroit">
-  <one-of>
-   <item>ici</item>
-   <item>lÃ </item>
- </one-of>
- </rule>
-
-  <rule id="rouge">
+  <rule id="bleu">
    <one-of>
-     <item>rouge</item>
+     <item>bleu</item>
    </one-of>
  </rule>
-
-   <rule id="bleu">
-    <one-of>
-      <item>bleu</item>
-    </one-of>
-  </rule>
 
 </grammar>
