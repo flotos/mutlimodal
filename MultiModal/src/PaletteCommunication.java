@@ -57,7 +57,7 @@ public class PaletteCommunication {
 			e.printStackTrace();
 		}
 		
-		// On écoute la liste des objets nous répondant leur couleur
+		// On écoute la liste des objets nous répondant leur nom et on les stock
 		try {
 			bus.bindMsg("Palette:ResultatTesterPoint x=(.*) y=(.*) nom=(.*)", new IvyMessageListener() {
 				public void receive(IvyClient client, String[] args) {

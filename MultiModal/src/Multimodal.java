@@ -46,6 +46,7 @@ public class Multimodal {
 						paletteManager.designerCouleur("bleu");
 						break;
 				}
+				System.out.println("New state : " + paletteManager.getState());
 			}
 		});
 	}

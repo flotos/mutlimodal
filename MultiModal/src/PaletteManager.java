@@ -12,6 +12,10 @@ public class PaletteManager {
 		this.state = STATE_LIST.PALETTE_VIDE;
 		this.paletteCommunication = paletteCommunication;
 	}
+	
+	public STATE_LIST getState() {
+		return this.state;
+	}
     
 	public void choisirRectangle() {
     	switch(state) {
@@ -206,7 +210,7 @@ public class PaletteManager {
 	public void setCurrentPosition(int x, int y) {
     	switch(state) {
     		case PALETTE_VIDE:
-    			position[0] = x; // TODO ajouter dans machine à état
+    			position[0] = x;
     			position[1] = y;
     			break;
     		case ATTENTE_SPECIFICATION:
