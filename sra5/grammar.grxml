@@ -52,4 +52,11 @@
     <tag>out.text  = "Action:la"</tag>
   </rule>
 
+   <rule id="couleur"> 
+    <one-of>
+      <item>rouge</item>
+      <item>bleu</item>
+    </one-of>
+  </rule>
+
 </grammar>

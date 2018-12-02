@@ -1,24 +1,19 @@
-import fr.dgac.ivy.Ivy;
-import fr.dgac.ivy.IvyClient;
-import fr.dgac.ivy.IvyException;
-import fr.dgac.ivy.IvyMessageListener;
-import java.awt.Event;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class PaletteManager {
 
+	private PaletteCommunication paletteCommunication;
+	
     private STATE_LIST state;
     private String shape;
     private String couleur;
-    
-    public static void main(String[] args) {
-    	
+    private int[] shapes;
+    private int[] position;
+	
+	public PaletteManager(PaletteCommunication paletteCommunication) {
+		this.state = STATE_LIST.PALETTE_VIDE;
+		this.paletteCommunication = paletteCommunication;
 	}
     
-    private void choisirRectangle() {
+	public void choisirRectangle() {
     	switch(state) {
     		case PALETTE_VIDE:
     	    	state = STATE_LIST.ATTENTE_SPECIFICATION;
@@ -34,10 +29,12 @@ public class PaletteManager {
     			break;
     		case PROCESSUS_DEPLACEMENT:
     			break;
+			case OBJET_A_DEPLACER:
+				break;
     	}
     }
     
-    private void choisirEllipse() {
+    void choisirEllipse() {
     	switch(state) {
 			case PALETTE_VIDE:
 		    	state = STATE_LIST.ATTENTE_SPECIFICATION;
@@ -53,10 +50,12 @@ public class PaletteManager {
 				break;
 			case PROCESSUS_DEPLACEMENT:
 				break;
+			case OBJET_A_DEPLACER:
+				break;
     	}
     }
     
-    private void designerPosition(int x, int y) {
+    public void designerPosition() {
     	switch(state) {
 			case PALETTE_VIDE:
 				break;
@@ -64,8 +63,10 @@ public class PaletteManager {
 				state = STATE_LIST.ATTENTE_ORDRE;
 				if(shape == "rectangle") {
 					// Créer un rectangle
+					paletteCommunication.creerRectangle(position[0], position[1], couleur);
 				} else if(shape == "ellipse") {
 					// Créer une ellipse
+					paletteCommunication.creerEllipse(position[0], position[1], couleur);
 				}
 				break;
 			case ATTENTE_ORDRE:
@@ -74,10 +75,14 @@ public class PaletteManager {
 				break;
 			case PROCESSUS_DEPLACEMENT:
 				break;
+			case OBJET_A_DEPLACER:
+				state = STATE_LIST.ATTENTE_ORDRE;
+				// Déplacement
+				break;
     	}
     }
     
-    private void designerCouleur(String couleur) {
+    public void designerCouleur(String couleur) {
     	switch(state) {
 			case PALETTE_VIDE:
 				break;
@@ -91,31 +96,135 @@ public class PaletteManager {
 				break;
 			case PROCESSUS_DEPLACEMENT:
 				break;
+			case OBJET_A_DEPLACER:
+				break;
     	}
     }
     
-    private void choisirActionSupprimer() {
-    	
+    public void choisirActionSupprimer() {
+    	switch(state) {
+			case PALETTE_VIDE:
+				break;
+			case ATTENTE_SPECIFICATION:
+				break;
+			case ATTENTE_ORDRE:
+				state = STATE_LIST.PROCESSUS_SUPPRESSION;
+				break;
+			case PROCESSUS_SUPPRESSION:
+				break;
+			case PROCESSUS_DEPLACEMENT:
+				break;
+			case OBJET_A_DEPLACER:
+				break;
+    	}
     }
     
-    private void choisirObjetASupprimer() {
-    	
+    public void choisirObjetASupprimer() {
+    	switch(state) {
+			case PALETTE_VIDE:
+				break;
+			case ATTENTE_SPECIFICATION:
+				break;
+			case ATTENTE_ORDRE:
+				break;
+			case PROCESSUS_SUPPRESSION:
+				if(shapes.length == 1) {
+					state = STATE_LIST.PALETTE_VIDE;
+				}
+				if(shapes.length > 1) {
+					state = STATE_LIST.ATTENTE_ORDRE;
+				}
+				// supprimer objet
+				break;
+			case PROCESSUS_DEPLACEMENT:
+				break;
+			case OBJET_A_DEPLACER:
+				break;
+    	}
     }
     
-    private void choisirObjetASupprimerAvecCouleur() {
-    	
+    public void choisirObjetASupprimerAvecCouleur() {
+    	switch(state) {
+			case PALETTE_VIDE:
+				break;
+			case ATTENTE_SPECIFICATION:
+				break;
+			case ATTENTE_ORDRE:
+				break;
+			case PROCESSUS_SUPPRESSION:
+				if(shapes.length == 1) {
+					state = STATE_LIST.PALETTE_VIDE;
+				}
+				if(shapes.length > 1) {
+					state = STATE_LIST.ATTENTE_ORDRE;
+				}
+				// supprimer objet avec couleur
+				break;
+			case PROCESSUS_DEPLACEMENT:
+				break;
+			case OBJET_A_DEPLACER:
+				break;
+    	}
     }
     
-    private void choisirActionDeplacer() {
-    	
+    public void choisirActionDeplacer() {
+    	switch(state) {
+			case PALETTE_VIDE:
+				break;
+			case ATTENTE_SPECIFICATION:
+				break;
+			case ATTENTE_ORDRE:
+				state = STATE_LIST.PROCESSUS_DEPLACEMENT;
+				break;
+			case PROCESSUS_SUPPRESSION:
+				break;
+			case PROCESSUS_DEPLACEMENT:
+				break;
+			case OBJET_A_DEPLACER:
+				break;
+    	}
     }
     
-    private void choisirObjetADeplacer() {
-    	
+    public void choisirObjetADeplacer() {
+    	switch(state) {
+			case PALETTE_VIDE:
+				break;
+			case ATTENTE_SPECIFICATION:
+				break;
+			case ATTENTE_ORDRE:
+				break;
+			case PROCESSUS_SUPPRESSION:
+				break;
+			case PROCESSUS_DEPLACEMENT:
+				state = STATE_LIST.OBJET_A_DEPLACER;
+				break;
+			case OBJET_A_DEPLACER:
+				break;
+    	}
     }
     
-    private void choisirPositionADeplacer() {
-    	
-    }
-    
+	public void setCurrentPosition(int x, int y) {
+    	switch(state) {
+    		case PALETTE_VIDE:
+    			position[0] = x; // TODO ajouter dans machine à état
+    			position[1] = y;
+    			break;
+    		case ATTENTE_SPECIFICATION:
+    			position[0] = x;
+    			position[1] = y;
+    			break;
+    		case ATTENTE_ORDRE:
+    			break;
+    		case PROCESSUS_SUPPRESSION:
+    			position[0] = x;
+    			position[1] = y;
+    			break;
+    		case PROCESSUS_DEPLACEMENT:
+    			position[0] = x;
+    			position[1] = y;
+    			break;
+			case OBJET_A_DEPLACER:
+				break;
+    	}
+    }   
 }
