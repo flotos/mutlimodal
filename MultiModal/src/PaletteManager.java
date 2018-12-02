@@ -86,7 +86,7 @@ public class PaletteManager {
 			case PROCESSUS_DEPLACEMENT:
 				state = STATE_LIST.ATTENTE_ORDRE;
 				// Le dernier paramètre devrais être la première lettre du type de forme à bouger, mais notre automate ne le prends pas en compte.
-				this.shapeToMove = paletteCommunication.getShapeBelowCursor(cursorPosition[0], cursorPosition[1], currentColor, 'E')
+				this.shapeToMove = paletteCommunication.getShapeBelowCursor(cursorPosition[0], cursorPosition[1], currentColor, 'E');
 				break;
 			case OBJET_A_DEPLACER:
 				state = STATE_LIST.ATTENTE_ORDRE;
