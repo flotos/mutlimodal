@@ -5,13 +5,15 @@ public class PaletteManager {
     private STATE_LIST state;
     private String currentShape;
     private String currentColor;
-    private int[] currentShapes;
+    private int nbShapes;
     private int[] cursorPosition = {0, 0};
+    private Shape shapeToMove;
 	
 	public PaletteManager(PaletteCommunication paletteCommunication) {
 		this.state = STATE_LIST.PALETTE_VIDE;
 		this.paletteCommunication = paletteCommunication;
 		this.currentColor = "rouge";
+		this.nbShapes = 0;
 	}
 	
 	public STATE_LIST getState() {
@@ -77,12 +79,19 @@ public class PaletteManager {
 			case ATTENTE_ORDRE:
 				break;
 			case PROCESSUS_SUPPRESSION:
+				state = STATE_LIST.ATTENTE_ORDRE;
+				paletteCommunication.supprimerObjet(cursorPosition[0], cursorPosition[1], currentColor, 'E');
+				nbShapes--;
 				break;
 			case PROCESSUS_DEPLACEMENT:
+				state = STATE_LIST.ATTENTE_ORDRE;
+				// Le dernier paramètre devrais être la première lettre du type de forme à bouger, mais notre automate ne le prends pas en compte.
+				this.shapeToMove = paletteCommunication.getShapeBelowCursor(cursorPosition[0], cursorPosition[1], currentColor, 'E')
 				break;
 			case OBJET_A_DEPLACER:
 				state = STATE_LIST.ATTENTE_ORDRE;
 				// Déplacement
+				paletteCommunication.deplacerObjet(shapeToMove, cursorPosition[0], cursorPosition[1]);
 				break;
     	}
     }
@@ -114,6 +123,7 @@ public class PaletteManager {
 				break;
 			case ATTENTE_ORDRE:
 				state = STATE_LIST.PROCESSUS_SUPPRESSION;
+				currentColor = null;
 				break;
 			case PROCESSUS_SUPPRESSION:
 				break;
@@ -133,10 +143,10 @@ public class PaletteManager {
 			case ATTENTE_ORDRE:
 				break;
 			case PROCESSUS_SUPPRESSION:
-				if(currentShapes.length == 1) {
+				if(nbShapes == 1) {
 					state = STATE_LIST.PALETTE_VIDE;
 				}
-				if(currentShapes.length > 1) {
+				if(nbShapes > 1) {
 					state = STATE_LIST.ATTENTE_ORDRE;
 				}
 				// supprimer objet
@@ -157,10 +167,10 @@ public class PaletteManager {
 			case ATTENTE_ORDRE:
 				break;
 			case PROCESSUS_SUPPRESSION:
-				if(currentShapes.length == 1) {
+				if(nbShapes == 1) {
 					state = STATE_LIST.PALETTE_VIDE;
 				}
-				if(currentShapes.length > 1) {
+				if(nbShapes > 1) {
 					state = STATE_LIST.ATTENTE_ORDRE;
 				}
 				// supprimer objet avec currentColor
@@ -180,6 +190,7 @@ public class PaletteManager {
 				break;
 			case ATTENTE_ORDRE:
 				state = STATE_LIST.PROCESSUS_DEPLACEMENT;
+				currentColor = null;
 				break;
 			case PROCESSUS_SUPPRESSION:
 				break;

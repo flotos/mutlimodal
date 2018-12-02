@@ -53,9 +53,7 @@ public class PaletteCommunication {
 		}
 	}
 	
-	public void deplacerObjet(int x, int y, String couleur, char shapeType) {
-		Shape shapeToMove = getShapeBelowCursor(x, y, couleur, shapeType);
-		
+	public void deplacerObjet(Shape shapeToMove, int x, int y) {		
 		try {
 			bus.sendMsg("Palette:DeplacerObjetAbsolu nom=" + shapeToMove.getName() + " x=" + x + " y=" + y);
 		} catch (IvyException e) {
@@ -73,7 +71,7 @@ public class PaletteCommunication {
 		
 		// On demande les infos des points sous le curseur
 		try {
-			bus.sendMsg("Palette:TesterPoint x="+x+" y="+y);
+			bus.sendMsg("Palette:TesterPoint x=" + x + " y=" + y);
 		} catch (IvyException e) {
 			e.printStackTrace();
 		}
